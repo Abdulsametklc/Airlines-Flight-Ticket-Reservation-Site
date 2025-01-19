@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simurg Airlines</title>
+    <!-- Bootstrap CSS ve özel stil tanımlamaları -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        @font-face {
+            font-family: 'Gotham Black';
+            src: url('https://fonts.cdnfonts.com/s/62988/GothamBlack-Regular.woff') format('woff');
+        }
+
+        /* Genel sayfa düzeni */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        /* Navigasyon çubuğu stil tanımları */
+        .navbar {
+            background-color: #f0f0f0;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-family: 'Gotham Black', Arial, sans-serif;
+            font-size: 24px;
+            color: #333;
+            margin: 0;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar h1:hover {
+            transform: scale(1.1);
+            color: #8a205f;
+        }
+
+        /* Admin giriş düğmesi stil tanımları */
+        .admin-btn {
+            background-color: #8a205f;
+            color: white;
+            font-size: 14px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .admin-btn:hover {
+            background-color: #6a1749;
+            transform: scale(1.05);
+        }
+
+        /* Hero alanı (üst görsel bölümü) */
+        .hero {
+            background: url('https://via.placeholder.com/1600x600') no-repeat center center/cover;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            position: relative;
+        }
+
+        /* Uçuş arama formu düzeni */
+        .flight-search {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 95%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .flight-search div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flight-search select, .flight-search input[type="date"] {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .flight-search label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .flight-search button {
+            grid-column: span 2;
+            background-color: #8a205f;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .flight-search button:hover {
+            background-color: #6a1749;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigasyon çubuğu başlangıcı -->
+    <div class="navbar">
+        <h1>Simurg Airlines</h1>
+        <a href="/admin" class="admin-btn">Admin Giriş</a>
+    </div>
+    <!-- Navigasyon çubuğu sonu -->
+
+    <!-- Hero bölümü başlangıcı -->
+    <div class="hero">
+        <!-- Uçuş arama formu başlangıcı -->
+        <form method="GET" action="{% url 'search-flights' %}">
+            <div class="flight-search">
+                <!-- Kalkış yeri seçimi -->
+                <div>
+                    <label for="departure">Kalkış Yeri</label>
+                    <select id="departure" name="departure">
+                        <option value="">Seçiniz</option>
+                        {% for city in departure_cities %}
+                            <option value="{{ city.city_name }}">{{ city.city_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Varış yeri seçimi -->
+                <div>
+                    <label for="arrival">Varış Yeri</label>
+                    <select id="arrival" name="arrival">
+                        <option value="">Seçiniz</option>
+                        {% for city in arrival_cities %}
+                            <option value="{{ city.city_name }}">{{ city.city_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Gidiş tarihi seçimi -->
+                <div>
+                    <label for="departure-date">Gidiş Tarihi</label>
+                    <input type="date" id="departure-date" name="departure-date">
+                </div>
+                <!-- Yolcu sayısı seçimi -->
+                <div>
+                    <label for="passengers">Yolcu Sayısı</label>
+                    <select id="passengers" name="passengers">
+                        <option value="1">1 Yolcu</option>
+                        <option value="2">2 Yolcu</option>
+                        <option value="3">3 Yolcu</option>
+                        <option value="4">4 Yolcu</option>
+                    </select>
+                </div>
+                <!-- Uçuş ara düğmesi -->
+                <button type="submit">Uçuş Ara</button>
+            </div>
+        </form>
+        <!-- Uçuş arama formu sonu -->
+    </div>
+    <!-- Hero bölümü sonu -->
+
+    <!-- Fonksiyon detayları düğmesi başlangıcı -->
+    <div class="text-center mt-5">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#authModal">Fonksiyon Detayları</button>
+    </div>
+
+    <!-- Modal başlangıcı -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="authModalLabel">Admin Authentication</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Admin giriş formu başlangıcı -->
+                <form id="authForm" method="POST" action="{% url 'authenticate_admin' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Authenticate</button>
+                    </div>
+                </form>
+                <!-- Admin giriş formu sonu -->
+            </div>
+        </div>
+    </div>
+    <!-- Modal sonu -->
+
+    <!-- JavaScript dosyaları -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

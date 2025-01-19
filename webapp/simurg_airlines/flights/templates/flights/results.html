@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uçuş Sonuçları</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6; /* Sayfanın genel arka plan rengini ayarlıyor. */
+        }
+
+        .container {
+            max-width: 1200px; /* Sayfanın içeriğini merkezde tutacak genişlik ayarı. */
+            margin: 20px auto;
+            padding: 15px;
+            background-color: white; /* İçeriğin arka planını beyaz yapar. */
+            border-radius: 10px; /* Köşeleri yuvarlar. */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Hafif bir gölge efekti ekler. */
+        }
+
+        h1 {
+            text-align: center; /* Başlık ortalanır. */
+            color: #333; /* Yazı rengi koyu gri yapılır. */
+        }
+
+        .flight-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Duyarlı tasarım için grid düzeni kullanılıyor. */
+            gap: 15px;
+            background: #fff;
+            border: 1px solid #ddd; /* Hafif bir çerçeve ekleniyor. */
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px; /* Kutular arasında boşluk bırakır. */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Kutulara hafif gölge ekleniyor. */
+        }
+
+        .flight-box div {
+            background-color: #f9f9f9; /* Bölümlerin arka planını hafif gri yapar. */
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center; /* Metni ortalar. */
+            font-size: 14px;
+            font-weight: bold; /* Metni daha belirgin yapar. */
+            color: #333; /* Yazı rengini koyu gri yapar. */
+        }
+
+        .price {
+            background-color: #8a205f; /* Fiyat kutusu için özel bir renk tanımlanıyor. */
+            color: white;
+            font-size: 16px; /* Fiyat bilgisi daha dikkat çekici hale geliyor. */
+        }
+
+        .select-button {
+            grid-column: span 3; /* Buton gridde daha fazla alan kaplıyor. */
+            padding: 10px;
+            background-color: #007bff; /* Mavi bir buton rengi tanımlanıyor. */
+            color: white;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px; /* Köşeleri yuvarlanmış buton. */
+            text-align: center;
+            cursor: pointer; /* Fare üzerine geldiğinde bir işaretçi görünür. */
+            transition: background-color 0.3s ease; /* Hover durumunda yumuşak geçiş efekti ekler. */
+        }
+
+        .select-button:hover {
+            background-color: #0056b3; /* Hover efekti ile buton koyulaşır. */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Uçuş Sonuçları</h1>
+
+        <!-- Eğer uygun uçuşlar varsa, bunlar aşağıda listelenir. -->
+        {% if flights %}
+            {% for flight in flights %}
+                <form method="GET" action="{% url 'customer-info' flight.id %}">
+                    <div class="flight-box">
+                        <!-- Kalkış şehri bilgisi kullanıcıya gösteriliyor. -->
+                        <div class="departure-city">
+                            Kalkış Yeri: {{ flight.departure_city }}
+                        </div>
+                        <!-- Varış şehri bilgisi. -->
+                        <div class="arrival-city">
+                            Varış Yeri: {{ flight.arrival_city }}
+                        </div>
+                        <!-- Kullanıcının tarih ve saat bilgilerini kolayca görebileceği alanlar. -->
+                        <div class="departure-date">
+                            Kalkış Tarihi: {{ flight.departure_date }}
+                        </div>
+                        <div class="departure-time">
+                            Kalkış Saati: {{ flight.departure_time }}
+                        </div>
+                        <div class="arrival-time">
+                            Varış Saati: {{ flight.arrival_time }}
+                        </div>
+                        <!-- Fiyat bilgisi özel bir renk ile vurgulanıyor. -->
+                        <div class="price">
+                            Fiyat: {{ flight.price }} TRY
+                        </div>
+                        <!-- Uygun uçuşu seçmek için buton alanı. -->
+                        <button type="submit" class="select-button">Seç</button>
+                    </div>
+                </form>
+            {% endfor %}
+        {% else %}
+            <!-- Eğer hiçbir uçuş bulunamazsa kullanıcıya bir mesaj gösteriliyor. -->
+            <p>Uygun uçuş bulunamadı.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

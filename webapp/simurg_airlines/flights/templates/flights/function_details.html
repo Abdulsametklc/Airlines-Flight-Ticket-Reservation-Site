@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- Sayfanın karakter setini UTF-8 olarak ayarlıyor -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Sayfa mobil uyumluluğu için ayar -->
+    <title>Flight Details</title> <!-- Sayfa başlığı -->
+
+    <!-- Bootstrap CSS: Görünüm ve tasarım için Bootstrap kütüphanesi -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Ekstil ayarları -->
+    <style>
+        /* Genel gövde ayarları */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Açık gri arka plan rengi */
+            padding: 20px;
+        }
+
+        /* Tablo kapsayıcısının tasarımı */
+        .table-container {
+            background-color: white; /* Beyaz arka plan rengi */
+            padding: 20px;
+            border-radius: 10px; /* Yuvarlatılmış köşeler */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölgelendirme */
+        }
+
+        /* Tablo hücreleri ve başlıklar */
+        .table th, .table td {
+            text-align: center; /* Hücrelerdeki içeriğin ortalanması */
+            vertical-align: middle; /* İçeriğin dikey olarak ortalanması */
+        }
+
+        .table th {
+            background-color: #007bff; /* Başlık hücrelerinin arka plan rengi (mavi) */
+            color: white; /* Başlık yazı rengi (beyaz) */
+        }
+
+        /* Çift numaralı satırların farklı renklendirilmesi */
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2; /* Açık gri arka plan rengi */
+        }
+    </style>
+</head>
+<body>
+    <!-- Sayfa içeriği -->
+    <div class="container">
+        <!-- Tablo kapsayıcısı -->
+        <div class="table-container">
+            <h2 class="text-center mb-4">Flight Function Details</h2> <!-- Başlık -->
+
+            <!-- Tablo -->
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <!-- Tablo başlıkları -->
+                        <th>Customer Name</th>
+                        <th>Departure City</th>
+                        <th>Arrival City</th>
+                        <th>Departure Date</th>
+                        <th>Flight Duration</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Django templating ile veri listeleme -->
+                    {% for flight in flight_data %}
+                    <tr>
+                        <!-- Tablo satırları verilerle dolduruluyor -->
+                        <td>{{ flight.full_name }}</td> <!-- Müşteri tam adı -->
+                        <td>{{ flight.departure_city }}</td> <!-- Kalkış şehri -->
+                        <td>{{ flight.arrival_city }}</td> <!-- Varış şehri -->
+                        <td>{{ flight.departure_date }}</td> <!-- Kalkış tarihi -->
+                        <td>{{ flight.duration }}</td> <!-- Uçuş süresi -->
+                        <td>${{ flight.total_price }}</td> <!-- Toplam fiyat -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS ve bağımlılıkları -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script> <!-- Popper.js -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- Bootstrap JS -->
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uçuş Arama</title>
+</head>
+<body>
+    <h1>Uçuş Arama</h1>
+    <form method="GET" action="{% url 'search-flights' %}">
+        {% csrf_token %}
+        <div class="flight-search">
+            <!-- Kalkış Yeri alanı, kullanıcının uçuşun başladığı şehri seçmesine olanak tanır. -->
+            <div>
+                <label for="departure">Kalkış Yeri</label>
+                <select id="departure" name="departure">
+                    <option value="">Seçiniz</option>
+                    {% for city in departure_cities %}
+                        <option value="{{ city }}">{{ city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Varış Yeri alanı, uçuşun hedef şehrini seçmek için kullanılır. -->
+            <div>
+                <label for="arrival">Varış Yeri</label>
+                <select id="arrival" name="arrival">
+                    <option value="">Seçiniz</option>
+                    {% for city in arrival_cities %}
+                        <option value="{{ city }}">{{ city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Kullanıcının gidiş tarihini seçtiği alan. -->
+            <div>
+                <label for="departure-date">Gidiş Tarihi</label>
+                <select id="departure-date" name="departure-date">
+                    <option value="">Seçiniz</option>
+                    {% for date in departure_dates %}
+                        <option value="{{ date }}">{{ date }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Yolcu sayısını seçmek için bir alan. Burada kullanıcı kaç kişi seyahat edeceğini belirtebilir. -->
+            <div style="grid-column: span 2;">
+                <label for="passengers">Yolcu Sayısı</label>
+                <select id="passengers" name="passengers">
+                    {% for count in passenger_counts %}
+                        <option value="{{ count }}">{{ count }} Yolcu</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Uçuş arama işlemini başlatan buton. -->
+            <button type="submit">Uçuş Ara</button>
+        </div>
+    </form>
+</body>
+</html>

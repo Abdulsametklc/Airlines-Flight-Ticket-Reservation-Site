@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- Sayfanın karakter setini UTF-8 olarak ayarlıyor -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Sayfa mobil uyumluluğu için ayar -->
+    <title>Admin SQL Functions</title> <!-- Sayfa başlığı -->
+</head>
+<body>
+    <!-- Sayfa Başlığı -->
+    <h1>Admin SQL Functions</h1>
+
+    <!-- Eğer bir sonuç varsa, sonucu ekrana yazdır -->
+    {% if result %}
+        <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+            <strong>Result:</strong> {{ result }} <!-- Django değişkeni ile sonuç gösterimi -->
+        </div>
+    {% endif %}
+
+    <!-- SQL işlemleri için form -->
+    <form method="post"> <!-- Form verileri POST yöntemiyle gönderiliyor -->
+        {% csrf_token %} <!-- CSRF koruması için token ekleniyor -->
+        <!-- SQL fonksiyonları için butonlar -->
+        <button type="submit" name="function_name" value="CalculateFlightDuration">
+            Calculate Flight Duration <!-- Uçuş Süresi Hesaplama -->
+        </button>
+        <button type="submit" name="function_name" value="CalculateTotalPrice">
+            Calculate Total Price <!-- Toplam Fiyat Hesaplama -->
+        </button>
+        <button type="submit" name="function_name" value="GetFullName">
+            Get Full Name <!-- Tam Adı Getir -->
+        </button>
+    </form>
+</body>
+</html>

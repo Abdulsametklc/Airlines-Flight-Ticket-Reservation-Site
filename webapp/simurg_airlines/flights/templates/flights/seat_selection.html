@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koltuk Seçimi</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Sayfa genel tasarım ayarları */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+        }
+
+        /* Uçak şematik yapısı tasarımı */
+        .airplane {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #d9edf7;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Her bir koltuk satırı */
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        /* Koltuk tasarımı */
+        .seat {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            background-color: #ddd;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 40px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Koltuk hover efekti */
+        .seat:hover {
+            background-color: #bbb;
+        }
+
+        /* Seçili koltuğun stili */
+        .seat.selected {
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        /* Onaylama butonu stili */
+        .btn-confirm {
+            margin-top: 20px;
+        }
+
+        /* Pilot kabini yazısı stili */
+        .cockpit {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Uçak şematik tasarımı -->
+        <div class="airplane">
+            <!-- Pilot kabini başlığı -->
+            <div class="cockpit">Pilot Kabini</div>
+
+            <!-- Koltukların dinamik olarak döngüyle eklenmesi -->
+            {% for row in rows %}
+            <div class="row">
+                {% for seat in row %}
+                <div class="seat" data-seat="{{ seat }}">{{ seat }}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <!-- Form alanı: Seçili koltuğun gizli bir input ile gönderilmesi -->
+            <form method="POST">
+                {% csrf_token %} <!-- Django CSRF koruma tokeni -->
+                <input type="hidden" id="selected-seat" name="selected_seat" value="">
+                <button type="button" class="btn btn-primary btn-confirm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Koltuk Seç</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Koltuk onaylama modalı -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Uçuşu Onayla</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Seçilen koltuk bilgisinin gösterilmesi -->
+                    Seçtiğiniz koltuk: <span id="selected-seat-display"></span><br>
+                    Onaylıyor musunuz?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="button" class="btn btn-primary" id="confirmButton">Onayla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Koltuk seçimi için JavaScript -->
+    <script>
+        // Tüm koltuk elementlerini seçiyoruz
+        const seats = document.querySelectorAll('.seat');
+        const selectedSeatInput = document.getElementById('selected-seat');
+        const selectedSeatDisplay = document.getElementById('selected-seat-display');
+        const confirmButton = document.getElementById('confirmButton');
+    
+        // Koltuk seçme işlemi
+        seats.forEach(seat => {
+            seat.addEventListener('click', () => {
+                // Tüm koltuklardan seçim durumunu kaldırıyoruz
+                seats.forEach(s => s.classList.remove('selected'));
+                // Seçilen koltuğa "selected" sınıfı ekliyoruz
+                seat.classList.add('selected');
+                // Gizli input ve modal ekranı için seçilen koltuğun değerini ayarlıyoruz
+                selectedSeatInput.value = seat.getAttribute('data-seat');
+                selectedSeatDisplay.textContent = seat.getAttribute('data-seat');
+            });
+        });
+    
+        // Onay butonu tıklanınca formu gönderiyoruz
+        confirmButton.addEventListener('click', () => {
+            if (selectedSeatInput.value) {
+                document.querySelector('form').submit();
+            } else {
+                alert("Lütfen bir koltuk seçin!");
+            }
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

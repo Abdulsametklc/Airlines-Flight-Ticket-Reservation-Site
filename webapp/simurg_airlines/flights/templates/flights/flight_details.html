@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- Sayfanın karakter setini UTF-8 olarak ayarlıyor -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Mobil cihazlarda sayfa boyutunu düzgün göstermek için ayar -->
+    <title>Flight Details</title> <!-- Sayfa başlığı -->
+</head>
+<body>
+    <!-- Başlık -->
+    <h1>Flight Details</h1>
+
+    <!-- Uçuş detaylarını göstermek için tablo -->
+    <table>
+        <!-- Tablo başlığı -->
+        <thead>
+            <tr>
+                <th>Flight ID</th> <!-- Uçuş ID başlığı -->
+                <th>Departure City</th> <!-- Kalkış Şehri başlığı -->
+                <th>Arrival City</th> <!-- Varış Şehri başlığı -->
+                <th>Departure Date</th> <!-- Kalkış Tarihi başlığı -->
+                <th>Price</th> <!-- Fiyat başlığı -->
+                <th>Customer Name</th> <!-- Müşteri Adı başlığı -->
+                <th>Selected Seat</th> <!-- Seçilen Koltuk başlığı -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Uçuş detaylarını döngü ile oluşturuyor -->
+            {% for detail in flight_details %}
+                <tr>
+                    <td>{{ detail.flight_id }}</td> <!-- Uçuş ID -->
+                    <td>{{ detail.departure_city }}</td> <!-- Kalkış Şehri -->
+                    <td>{{ detail.arrival_city }}</td> <!-- Varış Şehri -->
+                    <td>{{ detail.departure_date }}</td> <!-- Kalkış Tarihi -->
+                    <td>{{ detail.price }}</td> <!-- Fiyat -->
+                    <td>{{ detail.customer_first_name }} {{ detail.customer_last_name }}</td> <!-- Müşteri Adı -->
+                    <td>{{ detail.selected_seat }}</td> <!-- Seçilen Koltuk -->
+                </tr>
+            {% endfor %} <!-- Döngü bitişi -->
+        </tbody>
+    </table>
+</body>
+</html>
